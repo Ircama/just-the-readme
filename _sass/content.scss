@@ -27,6 +27,7 @@
   }
 
   li {
+    margin-top: 0.9em;
     .highlight {
       margin-top: $sp-1;
     }
@@ -66,6 +67,7 @@
     }
   }
 
+/*
   ul {
     list-style: none;
 
@@ -78,6 +80,7 @@
       }
     }
   }
+*/
 
   .task-list-item {
     &::before {
@@ -209,6 +212,8 @@
     position: relative;
     margin-top: 1.5em;
     margin-bottom: 0.25em;
+    border-bottom: 1px solid #dfddf6;
+    padding-bottom: 0.2em;
 
     + table,
     + .table-wrapper,
