@@ -264,7 +264,7 @@ nav.toc {
     visibility: visible;
     position: sticky;
     top: 0rem;  // Ircama
-    // left: calc((100% - #{$nav-width + $toc-width + $content-width}) / 2 + #{$nav-width + $content-width} + $sp-4);  // Ircama
+    // Check if .side-bar exists as a parent
     left: 0; // Ircama
     vertical-align: top;
     // margin-top: #{$header-height + $sp-8};  // Ircama
@@ -273,6 +273,9 @@ nav.toc {
     overflow-y: auto;
     padding-left: 12px;  // Ircama
     padding-right: 10px;  // Ircama
+    .side-bar & {
+      left: calc((100% - #{$nav-width + $toc-width + $content-width}) / 2 + #{$nav-width + $content-width} + $sp-4);
+    }
   }
 
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {

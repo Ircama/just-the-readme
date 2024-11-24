@@ -4,8 +4,9 @@ layout: home
 nav_order: 1
 description: "Just the Docs is a responsive Jekyll theme with built-in search that is easily customizable and hosted on GitHub Pages."
 permalink: /
+nav_enabled: false
+toc_enabled: true
 ---
-
 # Focus on writing good documentation
 {: .fs-9 }
 

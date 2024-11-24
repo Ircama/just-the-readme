@@ -1,110 +1,281 @@
-<p align="right">
-    <a href="https://badge.fury.io/rb/just-the-docs"><img src="https://badge.fury.io/rb/just-the-docs.svg" alt="Gem version"></a> <a href="https://github.com/just-the-docs/just-the-docs/actions/workflows/ci.yml"><img src="https://github.com/just-the-docs/just-the-docs/actions/workflows/ci.yml/badge.svg" alt="CI Build status"></a> <a href="https://app.netlify.com/sites/just-the-docs/deploys"><img src="https://api.netlify.com/api/v1/badges/9dc0386d-c2a4-4077-ad83-f02c33a6c0ca/deploy-status" alt="Netlify Status"></a>
-</p>
-<br><br>
-<p align="center">
-    <h1 align="center">Just the Docs</h1>
-    <p align="center">A modern, highly customizable, and responsive Jekyll theme for documentation with built-in search.<br>Easily hosted on GitHub Pages with few dependencies.</p>
-    <p align="center"><strong><a href="https://just-the-docs.com/">See it in action!</a></strong></p>
-    <br><br><br>
-</p>
+# just-the-readme
 
-<p align="center">A video walkthrough of various Just the Docs features</p>
+This template is based on [just-the-docs](https://github.com/just-the-docs/just-the-docs) and the implementation of [a TOC](https://github.com/bmndc/just-the-docs).
 
-https://user-images.githubusercontent.com/85418632/211225192-7e5d1116-2f4f-4305-bb9b-437fe47df071.mp4
+## Use the template
 
-## Installation
-
-### Use the template
-
-The [Just the Docs Template] provides the simplest, quickest, and easiest way to create a new website that uses the Just the Docs theme. To get started with creating a site, just click "[use the template]"!
-
-Note: To use the theme, you do ***not*** need to clone or fork the [Just the Docs repo]! You should do that only if you intend to browse the theme docs locally, contribute to the development of the theme, or develop a new theme based on Just the Docs.
-
-You can easily set the site created by the template to be published on [GitHub Pages] – the [template README] file explains how to do that, along with other details.
-
-If [Jekyll] is installed on your computer, you can also build and preview the created site *locally*. This lets you test changes before committing them, and avoids waiting for GitHub Pages.[^2] And you will be able to deploy your local build to a different platform than GitHub Pages.
-
-More specifically, the created site:
-
-- uses a gem-based approach, i.e. uses a `Gemfile` and loads the `just-the-docs` gem
-- uses the [GitHub Pages / Actions workflow] to build and publish the site on GitHub Pages
-
-Other than that, you're free to customize sites that you create with the template, however you like. You can easily change the versions of `just-the-docs` and Jekyll it uses, as well as adding further plugins.
-
-### Use RubyGems
-
-Alternatively, you can install the theme as a Ruby Gem, without creating a new site.
-
-Add this line to your Jekyll site's `Gemfile`:
-
-```ruby
-gem "just-the-docs"
-```
-
-And add this line to your Jekyll site's `_config.yml`:
+### jekyll-gh-pages.yml
 
 ```yaml
-theme: just-the-docs
+# Workflow for building and deploying a Jekyll site to GitHub Pages
+name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Build job (github-pages-build)
+  build:
+    name: Build (github-pages-build gem)
+    runs-on: ubuntu-latest
+    env:
+      PAGES_REPO_NWO: ${{ github.repository }}
+      JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      JEKYLL_ENV: production
+      NODE_ENV: production
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Ruby Environment
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true # runs 'bundle install' to install and cache gems
+      - name: Add a YAML front matter to README.md
+        run: |
+          ex README.md <<EOF
+          1i
+          ---
+          title: Home
+          layout: home
+          nav_order: 1
+          nav_enabled: false
+          permalink: /
+          ---
+          .
+          wq
+          EOF
+      - name: Build Jekyll Site
+        run: bundle exec jekyll build
+      - name: Upload artifact for Pages
+        uses: actions/upload-pages-artifact@v3
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 ```
 
-And then execute:
+### Gemfile
 
-    $ bundle
+```yaml
+source "https://rubygems.org"
+gemspec
 
-Or install it yourself as:
+gem "jekyll-github-metadata", ">= 2.15"
 
-    $ gem install just-the-docs
+gem "jekyll-include-cache", group: :jekyll_plugins
+gem "jekyll-sitemap", group: :jekyll_plugins
 
-Alternatively, you can run it inside Docker while developing your site
+gem "html-proofer", "~> 5.0", :group => :development
 
-    $ docker-compose up
+gem 'jekyll-autolinks'
 
-## Usage
+gem 'kramdown-parser-gfm'
+gem "jekyll-remote-theme"
 
-[View the documentation][Just the Docs] for usage information.
+#------------------------------------------------------------------------------------------------
+# After modifying the Gemfile:
+#------------------------------------------------------------------------------------------------
+#bundle install
+#bundle exec jekyll serve
+```
 
-## Contributing
+### just-the-readme.gemspec
 
-Bug reports, proposals of new features, and pull requests are welcome on GitHub at https://github.com/just-the-docs/just-the-docs. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+```yaml
+# coding: utf-8
 
-### Submitting code changes:
+Gem::Specification.new do |spec|
+  spec.name          = "just-the-readme"
+  spec.version       = "0.0.1"
+  spec.authors       = ["Ircama"]
 
-- Submit an [Issue](https://github.com/just-the-docs/just-the-docs/issues) that motivates the changes, using the appropriate template
-- Discuss the proposed changes with other users and the maintainers
-- Open a [Pull Request](https://github.com/just-the-docs/just-the-docs/pulls)
-- Ensure all CI tests pass
-- Provide instructions to check the effect of the changes
-- Await code review
+  spec.summary       = %q{A modern, highly customizable, and responsive Jekyll theme for README documentation with built-in search.}
+  spec.homepage      = "https://github.com/Ircama/just-the-readme"
+  spec.license       = "MIT"
 
-### Design and development principles of this theme:
+  spec.add_development_dependency "bundler", ">= 2.3.5"
+  spec.add_runtime_dependency "sass-embedded", "~> 1.78.0"  # Fix use of deprecated sass lighten() and darken()
+  spec.add_runtime_dependency "jekyll", ">= 3.8.5"
+  spec.add_runtime_dependency "jekyll-seo-tag", ">= 2.0"
+  spec.add_runtime_dependency "jekyll-include-cache"
+  spec.add_runtime_dependency "rake", ">= 12.3.1"
+  spec.add_runtime_dependency "base64"
+  spec.add_runtime_dependency "csv"
+end
+```
 
-1. As few dependencies as possible
-2. No build script needed
-3. First class mobile experience
-4. Make the content shine
+### _config.yml
 
-## Development
+```yaml
+remote_theme: ircama/just-the-readme
 
-To set up your environment to develop this theme: fork this repo, the run `bundle install` from the root directory.
+# Enable or disable the site search
+# Supports true (default) or false
+search_enabled: true
 
-A modern [devcontainer configuration](https://code.visualstudio.com/docs/remote/containers) for VSCode is included.
+# For copy button on code
+enable_copy_code_button: true
 
-Your theme is set up just like a normal Jekyll site! To test your theme, run `bundle exec jekyll serve` and open your browser at `http://localhost:4000`. This starts a Jekyll server using your theme. Add pages, documents, data, etc. like normal to test your theme's contents. As you make modifications to your theme and to your content, your site will regenerate and you should see the changes in the browser after a refresh, just like normal.
+# Table of Contents
+# Enable or disable the Table of Contents globally
+# Supports true (default) or false
+toc_enabled: true
+toc:
+  # Minimum header level to include in ToC
+  # Default: 1
+  min_level: 1
+  # Maximum header level to include in ToC
+  # Default: 6
+  max_level: 6
+  # Display the ToC as ordered list instead of an unordered list
+  # Supports true (default) or false
+  ordered: true
+  # Whether ToC will be a single level list
+  # Supports true or false (default)
+  flat_toc: false
 
-When this theme is released, only the files in `_layouts`, `_includes`, and `_sass` tracked with Git will be included in the gem.
+# By default, consuming the theme as a gem leaves mermaid disabled; it is opt-in
+mermaid:
+  # Version of mermaid library
+  # Pick an available version from https://cdn.jsdelivr.net/npm/mermaid/
+  version: "9.1.6"
+  # Put any additional configuration, such as setting the theme, in _includes/mermaid_config.js
+  # See also docs/ui-components/code
+  # To load mermaid from a local library, also use the `path` key to specify the location of the library; e.g.
+  # for (v10+):
+  # path: "/assets/js/mermaid.esm.min.mjs"
+  # for (<v10):
+  # path: "/assets/js/mermaid.min.js"
+  # Note: copy both `mermaid.esm.min.mjs` (v10+) or `mermaid.min.js` (<v10) and the associated `.map` file from the specified version of `mermaid/dist` to `/assets/js/`.
 
-## License
+# Enable or disable heading anchors
+heading_anchors: true
 
-The theme is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+# Aux links for the upper right navigation
+aux_links:
+  "text_console on GitHub":
+    - "https://github.com/Ircama/text_console/"
 
-[^2]: [It can take up to 10 minutes for changes to your site to publish after you push the changes to GitHub](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/creating-a-github-pages-site-with-jekyll#creating-your-site).
+# Makes Aux links open in a new tab. Default is false
+aux_links_new_tab: true
 
-[Jekyll]: https://jekyllrb.com
-[Just the Docs Template]: https://just-the-docs.github.io/just-the-docs-template/
-[Just the Docs]: https://just-the-docs.com
-[Just the Docs repo]: https://github.com/just-the-docs/just-the-docs
-[GitHub Pages]: https://pages.github.com/
-[Template README]: https://github.com/just-the-docs/just-the-docs-template/blob/main/README.md
-[GitHub Pages / Actions workflow]: https://github.blog/changelog/2022-07-27-github-pages-custom-github-actions-workflows-beta/
-[use the template]: https://github.com/just-the-docs/just-the-docs-template/generate
+# Enable or disable the side/mobile menu globally
+# Nav menu can also be selectively enabled or disabled using page variables or the minimal layout
+nav_enabled: true
+
+# Sort order for navigation links
+# nav_sort: case_insensitive # default, equivalent to nil
+nav_sort: case_sensitive # Capital letters sorted before lowercase
+
+# External navigation links
+nav_external_links:
+  - title: Just the Docs on GitHub
+    url: https://github.com/just-the-docs/just-the-docs
+
+# Show navigation error report
+nav_error_report: true # default is false/nil.
+
+liquid:
+  error_mode: strict
+  strict_filters: true
+
+# Footer content
+# appears at the bottom of every page's main content
+
+# Back to top link
+back_to_top: true
+back_to_top_text: "Back to top"
+
+footer_content: 'Copyright &copy; 2024-2025 Ircama. Distributed by an <a href="https://raw.githubusercontent.com/Ircama/text_console/refs/heads/main/LICENSE">MIT license.</a>'
+
+# Footer last edited timestamp
+last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter
+last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https://ruby-doc.org/stdlib-2.7.0/libdoc/time/rdoc/Time.html
+
+# Footer "Edit this page on GitHub" link text
+gh_edit_link: true # show or hide edit this page link
+gh_edit_link_text: "Edit this page on GitHub"
+gh_edit_repository: "https://github.com/Ircama/text_console" # the github URL for your repo
+gh_edit_branch: "main" # the branch that your docs is served from
+# gh_edit_source: docs # the source that your files originate from
+gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
+
+# Color scheme currently only supports "dark", "light"/nil (default), or a custom scheme that you define
+color_scheme: nil
+
+callouts_level: quiet # or loud
+callouts:
+  highlight:
+    color: yellow
+  important:
+    title: Important
+    color: blue
+  new:
+    title: New
+    color: green
+  note:
+    title: Note
+    color: purple
+  warning:
+    title: Warning
+    color: red
+
+# Google Analytics Tracking (optional)
+# Supports a CSV of tracking ID strings (eg. "UA-1234567-89,G-1AB234CDE5")
+# Note: the main Just the Docs site does *not* use Google Analytics.
+# ga_tracking: UA-2709176-10,G-5FG1HLH3XQ
+# ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-github-metadata
+  - jekyll-sitemap
+  - jekyll-autolinks
+  - jekyll-include-cache # Optional, for caching
+  - jekyll-remote-theme # Add if not already present
+
+kramdown:
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  startings: []
+  blanklines: false
+  profile: false
+  # ignore:
+  #   envs: all
+
+autolinks:
+  link_attr: 'target="_blank"'
+  skip_tags: ["a", "pre", "code", "kbd", "script"]
+```
