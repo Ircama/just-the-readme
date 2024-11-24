@@ -27,7 +27,7 @@
   }
 
   li {
-    margin-top: 0.9em;
+    margin-top: 0.9em;  // Ircama
     .highlight {
       margin-top: $sp-1;
     }
@@ -67,7 +67,7 @@
     }
   }
 
-/*
+/* Ircama
   ul {
     list-style: none;
 
@@ -212,8 +212,8 @@
     position: relative;
     margin-top: 1.5em;
     margin-bottom: 0.25em;
-    border-bottom: 1px solid #dfddf6;
-    padding-bottom: 0.2em;
+    border-bottom: 1px solid #dfddf6;  // Ircama
+    padding-bottom: 0.2em;  // Ircama
 
     + table,
     + .table-wrapper,

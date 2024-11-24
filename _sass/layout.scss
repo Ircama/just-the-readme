@@ -75,28 +75,28 @@
   @include mq(md) {
     position: relative;
     max-width: $content-width;
-    text-align: justify;
+    text-align: justify;  // Ircama
   }
 
-  @media (min-width: 68rem) and (max-width: 70rem) {
+  @media (min-width: 66.5rem) and (max-width: 70rem) {  // Ircama
     position: relative;
     max-width: 45rem;
     text-align: justify;
   }
 
-  @media (max-width: 67.99rem) {
+  @media (max-width: 66.49rem) {  // Ircama
     max-width: 100%;
   }
 }
 
 .main-content-wrap {
-  padding-top: $gutter-spacing-sm;
+  // padding-top: $gutter-spacing-sm;  // Ircama
   padding-bottom: $gutter-spacing-sm;
 
   @include container;
 
   @include mq(md) {
-    padding-top: $gutter-spacing;
+    // padding-top: $gutter-spacing;  // Ircama
     padding-bottom: $gutter-spacing;
   }
 }
@@ -256,26 +256,28 @@ As a temporary fix, set both the main content and ToC to be inline with each oth
 margin-left to accompany the ToC that goes before it */
 nav.toc {
   display: none;
-  visibility: visible;
-  background-color: aliceblue;
+  visibility: visible;  // Ircama
+  background-color: aliceblue;  // Ircama
 
   @include mq(lg) {
     display: inline-block;
     visibility: visible;
     position: sticky;
-    top: 0rem;
-    left: calc((100% - #{$nav-width + $toc-width + $content-width}) / 2 + #{$nav-width + $content-width} + $sp-4);
+    top: 0rem;  // Ircama
+    // left: calc((100% - #{$nav-width + $toc-width + $content-width}) / 2 + #{$nav-width + $content-width} + $sp-4);  // Ircama
+    left: 0; // Ircama
     vertical-align: top;
-    width: 19rem;
-    height: 100vh;
+    // margin-top: #{$header-height + $sp-8};  // Ircama
+    width: 19rem;  // Ircama
+    height: 100vh;  // Ircama
     overflow-y: auto;
-    padding-left: 12px;
-    padding-right: 10px;
+    padding-left: 12px;  // Ircama
+    padding-right: 10px;  // Ircama
   }
 
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     position: fixed;
-    max-height: calc(100vh - #{$header-height + $sp-10});
+    // max-height: calc(100vh - #{$header-height + $sp-10});  // Ircama
   }
 
   @include fs-3;
@@ -285,6 +287,7 @@ details.inpage-toc {
   display: block;
   visibility: visible;
 
+//   @include mq(xl) {  // Ircama
   @include mq(lg) {
     display: none;
     visibility: hidden;
@@ -292,14 +295,14 @@ details.inpage-toc {
 }
 
 nav.toc > h2 {
-  margin-top: 0;
+  margin-top: 0;  // Ircama
 }
 
 // Because toc-width is usually small => hide the list bullet points and minimize left padding
 // TODO: utilize jekyll-toc's item_class and submenu_class
 nav.toc ul {
-  font-size: 0.8rem !important;
-  line-height: 130%;
+  font-size: 0.8rem !important;  // Ircama
+  line-height: 130%;  // Ircama
   list-style-type: none;
   padding-left: $sp-3;
 }
@@ -308,16 +311,16 @@ nav.toc > ul {
   padding-left: 0;
 }
 
-nav.toc li {
+nav.toc li {  // Ircama
   padding-top: 0;
 }
 
-nav.toc a {
+nav.toc a {  // Ircama
   text-decoration: none;
   color: black;
 }
 
-nav.toc a:hover {
+nav.toc a:hover {  // Ircama
   color: blue;
   font-weight: bold;
 }

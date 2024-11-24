@@ -9,3 +9,11 @@ gem "jekyll-sitemap", group: :jekyll_plugins
 gem "html-proofer", "~> 5.0", :group => :development
 
 gem 'jekyll-autolinks'
+
+gem 'kramdown-parser-gfm'
+
+#------------------------------------------------------------------------------------------------
+# After modifying the Gemfile:
+#------------------------------------------------------------------------------------------------
+#bundle install
+#bundle exec jekyll serve

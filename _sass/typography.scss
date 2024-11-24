@@ -3,7 +3,7 @@
 
 h1,
 .text-alpha {
-  font-weight: 500;
+  font-weight: 500;  // (pre-Ircama): font-weight: 300;
 
   @include fs-8;
 }
