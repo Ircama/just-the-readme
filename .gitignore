@@ -29,3 +29,7 @@ node_modules
 .bundle
 .ruby-version
 ircama.md
+
+Gemfile.lock
+_site/
+.jekyll-gh-pages/*.md
