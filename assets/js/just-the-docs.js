@@ -163,7 +163,13 @@ function searchLoaded(index, docs) {
   }
 
   function hideSearch() {
-    document.documentElement.classList.remove('search-active');
+    if ('ontouchstart' in window || navigator.maxTouchPoints) {
+        setTimeout(() => {
+            document.documentElement.classList.remove('search-active');
+        }, 2000);
+    } else {
+            document.documentElement.classList.remove('search-active');
+    }
   }
 
   function update() {
