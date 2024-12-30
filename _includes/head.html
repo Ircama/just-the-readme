@@ -42,6 +42,10 @@
 
   <script src="{{ '/assets/js/just-the-docs.js' | relative_url }}"></script>
 
+  {% if page.toc_enabled == true or layout.toc_enabled == true or site.toc_enabled == true %}
+  <script src="{{ '/assets/js/toc-highlight.js' | relative_url }}"></script>
+  {% endif %}
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   {% include_cached favicon.html %}
